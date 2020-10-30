@@ -1,0 +1,26 @@
+import pandas as pd
+df = pd.read_csv('/datasets/music_log_upd_en.csv')
+
+genre_grouping = df.groupby('user_id')['genre_name']
+
+def get_heavy_user(groups):
+    for group_name, group_data in groups:
+        if len(group_data) > 50:
+            user = group_name
+            return user
+
+user_id = get_heavy_user(genre_grouping)
+
+music_user = df[(df['user_id'] == user_id)&(df["total_play_seconds"]!=0)]
+#print(music_user)
+sum_music_user = music_user.groupby("genre_name")['total_play_seconds'].sum()
+#print(sum_music_user)
+
+count_music_user=music_user.groupby("genre_name")['genre_name'].count()
+#print(count_music_user)
+
+final_sum=sum_music_user.sort_values(ascending=False)
+#print(final_sum)
+
+final_count = count_music_user.sort_values(ascending = False)
+print(final_count)
