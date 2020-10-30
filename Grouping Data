@@ -1,0 +1,13 @@
+import pandas as pd
+df = pd.read_csv('/datasets/music_log_upd_en.csv')
+
+user_grouping = df.groupby('user_id')
+
+def get_heavy_listener(groups):
+    for group_name, group_data in groups:
+        if len(group_data) > 50:
+            user = group_name
+            return user
+user_id = get_heavy_listener(user_grouping)
+print(user_id)
+        
